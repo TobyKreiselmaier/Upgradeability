@@ -8,7 +8,7 @@ module.exports = async function(deployer, network, accounts){
   const proxy = await Proxy.new(dogs.address);
 
   //Create Proxy Dog to Fool Truffle
-  //Create a 'Dogs' instance at an already deployed contracts address.
+  //Create a 'Dogs' instance at an already deployed contract address.
   //This only works because of the setup with the shared storage
   var proxyDog = await Dogs.at(proxy.address);
 
@@ -17,7 +17,7 @@ module.exports = async function(deployer, network, accounts){
 
   //Testing
   var nrOfDogs = await proxyDog.getNumberOfDogs();
-  console.log("Initial number of dogs: " + nrOfDogs.toNumber());
+  console.log("With Dogs contract: " + nrOfDogs.toNumber());
 
   //Deploy new version of Dogs
   const dogsUpdated = await DogsUpdated.new();
@@ -30,14 +30,13 @@ module.exports = async function(deployer, network, accounts){
 
   //Check so that storage remained
   nrOfDogs = await proxyDog.getNumberOfDogs();
-  console.log("After update: " + nrOfDogs.toNumber());
+  console.log("With DogsUpdated: " + nrOfDogs.toNumber());
 
   //Set the nr of dogs through the proxy with NEW FUNC CONTRACT
-  await proxyDog.setNumberOfDogs(30);
+  //originally reverted bc owner was the proxy not the deploying user.
+  await proxyDog.setNumberOfDogs(30);//only accounts[0] can delegatecall this.
 
   //Check so that setNumberOfDogs worked with new func contract.
   nrOfDogs = await proxyDog.getNumberOfDogs();
   console.log("After change: " + nrOfDogs.toNumber());
-
-
 }
