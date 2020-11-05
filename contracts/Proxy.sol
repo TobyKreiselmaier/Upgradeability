@@ -1,10 +1,10 @@
-pragma solidity 0.5.2;
+pragma solidity 0.5.16;
 
 import "./Storage.sol";
 
 contract Proxy is Storage {
 
-  address currentAddress;
+  address currentAddress;//additional variables can be added in proxy, but not in functional contract
 
   constructor(address _currentAddress) public {
     owner = msg.sender;
@@ -15,7 +15,8 @@ contract Proxy is Storage {
     currentAddress = _newAddress;
   }
 
-  //FALLBACK FUNCTION.
+  //FALLBACK FUNCTION
+  //will trigger when function calls are made to this contract with function names that don't exist
   function () payable external {
     address implementation = currentAddress;
     require(currentAddress != address(0));

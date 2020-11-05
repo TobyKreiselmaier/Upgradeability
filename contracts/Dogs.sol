@@ -1,4 +1,4 @@
-pragma solidity 0.5.2;
+pragma solidity 0.5.16;
 
 import "./Storage.sol";
 
@@ -19,5 +19,4 @@ contract Dogs is Storage {
   function setNumberOfDogs(uint256 toSet) public {
     _uintStorage["Dogs"] = toSet;
   }
-
 }
